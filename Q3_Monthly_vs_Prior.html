@@ -1,0 +1,150 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Q3 — Monthly Performance vs Prior Month</title>
+<link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+*{margin:0;padding:0;box-sizing:border-box}
+body{font-family:'DM Sans',sans-serif;background:#f8f7f4;color:#1a1a1a;padding:40px 20px}
+.container{max-width:720px;margin:0 auto}
+.badge{display:inline-block;font-size:11px;font-weight:600;letter-spacing:.5px;text-transform:uppercase;background:#e6f1fb;color:#0c447c;padding:4px 12px;border-radius:6px;margin-bottom:12px}
+h1{font-size:26px;font-weight:700;margin-bottom:4px;letter-spacing:-.3px}
+.subtitle{font-size:13px;color:#888780;margin-bottom:28px}
+.divider{height:1px;background:#e0dfda;margin-bottom:28px}
+.kpi-grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:10px;margin-bottom:32px}
+.kpi{background:#fff;border:1px solid #eceae5;border-radius:10px;padding:16px 18px}
+.kpi-label{font-size:11px;font-weight:600;text-transform:uppercase;letter-spacing:.4px;color:#888780;margin-bottom:6px}
+.kpi-val{font-size:24px;font-weight:700;letter-spacing:-.5px;margin-bottom:4px}
+.kpi-delta{font-size:12px;font-weight:500}
+.up{color:#4a8c1c}
+.down{color:#d44}
+.section-label{font-size:13px;font-weight:600;color:#888780;text-transform:uppercase;letter-spacing:.4px;margin-bottom:12px}
+.chart-wrap{background:#fff;border:1px solid #eceae5;border-radius:10px;padding:20px 20px 16px;margin-bottom:32px}
+.legend{display:flex;gap:20px;margin-bottom:14px;font-size:12px;color:#888780}
+.legend span{display:flex;align-items:center;gap:5px}
+.legend .dot{width:10px;height:10px;border-radius:3px}
+.chart-container{position:relative;width:100%;height:260px}
+.country-grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:10px;margin-bottom:32px}
+.country{background:#fff;border:1px solid #eceae5;border-radius:10px;padding:14px 16px}
+.country-name{font-size:11px;font-weight:600;text-transform:uppercase;letter-spacing:.4px;color:#888780;margin-bottom:4px}
+.country-rev{font-size:18px;font-weight:700;margin-bottom:2px}
+.country-delta{font-size:12px;font-weight:500}
+.analysis{background:#fff;border:1px solid #eceae5;border-radius:10px;padding:20px 22px;margin-bottom:32px}
+.analysis h3{font-size:14px;font-weight:600;margin-bottom:10px}
+.analysis p{font-size:14px;line-height:1.7;color:#444}
+.analysis p+p{margin-top:10px}
+.footer{font-size:11px;color:#b4b2a9;text-align:center;padding-top:16px;border-top:1px solid #e0dfda}
+@media(max-width:540px){
+.kpi-grid,.country-grid{grid-template-columns:repeat(2,minmax(0,1fr))}
+.kpi-val{font-size:20px}
+}
+</style>
+</head>
+<body>
+<div class="container">
+  <span class="badge">Query 3 of 20</span>
+  <h1>How are we tracking vs last month?</h1>
+  <p class="subtitle">March vs February 2026 · Demo data</p>
+  <div class="divider"></div>
+
+  <div class="kpi-grid">
+    <div class="kpi">
+      <div class="kpi-label">March revenue</div>
+      <div class="kpi-val">$362,800</div>
+      <div class="kpi-delta up">+9.4% vs Feb</div>
+    </div>
+    <div class="kpi">
+      <div class="kpi-label">Orders</div>
+      <div class="kpi-val">5,182</div>
+      <div class="kpi-delta up">+7.2%</div>
+    </div>
+    <div class="kpi">
+      <div class="kpi-label">AOV</div>
+      <div class="kpi-val">$70.01</div>
+      <div class="kpi-delta up">+2.0%</div>
+    </div>
+    <div class="kpi">
+      <div class="kpi-label">Conv. rate</div>
+      <div class="kpi-val">3.1%</div>
+      <div class="kpi-delta up">+0.2pp</div>
+    </div>
+    <div class="kpi">
+      <div class="kpi-label">Ad spend</div>
+      <div class="kpi-val">$98,400</div>
+      <div class="kpi-delta down">+11.8%</div>
+    </div>
+    <div class="kpi">
+      <div class="kpi-label">MER</div>
+      <div class="kpi-val">3.69x</div>
+      <div class="kpi-delta down">-2.1%</div>
+    </div>
+  </div>
+
+  <div class="section-label">Weekly revenue — March vs February</div>
+  <div class="chart-wrap">
+    <div class="legend">
+      <span><span class="dot" style="background:#378ADD"></span> March</span>
+      <span><span class="dot" style="background:#ccc"></span> February</span>
+    </div>
+    <div class="chart-container">
+      <canvas id="monthChart"></canvas>
+    </div>
+  </div>
+
+  <div class="section-label">Revenue by country</div>
+  <div class="country-grid">
+    <div class="country">
+      <div class="country-name">Australia</div>
+      <div class="country-rev">$187,200</div>
+      <div class="country-delta up">+12.1%</div>
+    </div>
+    <div class="country">
+      <div class="country-name">United States</div>
+      <div class="country-rev">$124,600</div>
+      <div class="country-delta up">+6.8%</div>
+    </div>
+    <div class="country">
+      <div class="country-name">United Kingdom</div>
+      <div class="country-rev">$51,000</div>
+      <div class="country-delta up">+4.2%</div>
+    </div>
+  </div>
+
+  <div class="analysis">
+    <h3>Analysis</h3>
+    <p>March came in at $362.8k, up 9.4% on February. Growth was driven primarily by Australia (+12.1%) which remains the strongest market. Orders and AOV both lifted, but the concern is ad efficiency — spend climbed 11.8% while MER actually dipped to 3.69x.</p>
+    <p>Revenue grew, but not as fast as spend, so you're starting to see diminishing returns on the incremental dollar. Worth reviewing which campaigns drove the extra spend and whether they're pulling their weight.</p>
+  </div>
+
+  <div class="footer">Demo data · Generated by Claude AI chatbot benchmark</div>
+</div>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.1/chart.umd.js"></script>
+<script>
+const weeks = ['Wk 1','Wk 2','Wk 3','Wk 4','Wk 5'];
+const mar = [78200, 82400, 87420, 91300, 23480];
+const feb = [76800, 79100, 84600, 90200, 0];
+
+new Chart(document.getElementById('monthChart'), {
+  type: 'bar',
+  data: {
+    labels: weeks,
+    datasets: [
+      {label:'March',data:mar,backgroundColor:'#378ADD',borderRadius:4,barPercentage:0.7,categoryPercentage:0.7},
+      {label:'February',data:feb,backgroundColor:'#ccc',borderRadius:4,barPercentage:0.7,categoryPercentage:0.7}
+    ]
+  },
+  options: {
+    responsive:true,maintainAspectRatio:false,
+    plugins:{legend:{display:false},tooltip:{backgroundColor:'#1a1a1a',titleFont:{family:'DM Sans'},bodyFont:{family:'DM Sans'},padding:10,cornerRadius:8,callbacks:{label:ctx=>'$'+ctx.parsed.y.toLocaleString()}}},
+    scales:{
+      y:{beginAtZero:true,ticks:{callback:v=>'$'+(v/1000).toFixed(0)+'k',font:{family:'DM Sans',size:11},color:'#b4b2a9'},grid:{color:'rgba(0,0,0,0.04)'},border:{display:false}},
+      x:{ticks:{font:{family:'DM Sans',size:11},color:'#b4b2a9'},grid:{display:false},border:{display:false}}
+    }
+  }
+});
+</script>
+</body>
+</html>
